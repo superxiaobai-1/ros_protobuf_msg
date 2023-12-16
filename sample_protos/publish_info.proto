@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+// the same as namespace, look like: cargo.alpas.perception
+package superbai.sample;
+
+message PublishInfo {
+    string name= 1;
+    string message_type = 2;
+    string publish_msg = 3;
+
+}
