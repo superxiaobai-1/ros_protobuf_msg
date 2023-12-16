@@ -23,7 +23,7 @@ docker rm -v -f ros_noetic > /dev/null
 echo "start docker"
 docker run -it -d \
 --privileged=true \
---name ros_noetic \
+--name ros_noetic_proto \
 -e DISPLAY=$display \
 -e DOCKER_USER="${user}" \
 -e USER="${user}" \
@@ -34,4 +34,4 @@ docker run -it -d \
 -v ${MONITOR_HOME_DIR}:/work \
 -v ${XDG_RUNTIME_DIR}:${XDG_RUNTIME_DIR} \
 --network host \
-ros:noetic
+ros_protobuf:noetic
