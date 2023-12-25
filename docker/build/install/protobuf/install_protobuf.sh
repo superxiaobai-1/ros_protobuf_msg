@@ -13,17 +13,19 @@ PKG_NAME="protobuf-${VERSION}.tar.gz"
 
 tar xzf "${PKG_NAME}"
 pushd protobuf-${VERSION}
-mkdir cmake/build && cd cmake/build
+    mkdir cmake/build && cd cmake/build
 
-cmake .. \
-    -DBUILD_SHARED_LIBS=ON \
-    -Dprotobuf_BUILD_TESTS=OFF \
-    -DCMAKE_INSTALL_PREFIX:PATH="/usr/local" \
-    -DCMAKE_BUILD_TYPE=Release
+    cmake .. \
+        -DBUILD_SHARED_LIBS=ON \
+        -Dprotobuf_BUILD_TESTS=OFF \
+        -DCMAKE_INSTALL_PREFIX:PATH="/usr/local" \
+        -DCMAKE_BUILD_TYPE=Release
 
-make -j$(nproc)
-make install
-ldconfig
+    make -j$(nproc)
+    make install
 popd
 
+ldconfig
+
+# Clean up
 rm -rf PKG_NAME protobuf-${VERSION}

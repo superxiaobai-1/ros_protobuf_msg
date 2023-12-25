@@ -29,6 +29,8 @@ RUN apt update && \
     cmake \
     net-tools
 
+COPY install/abseil /tmp/install/abseil
+RUN /tmp/install/abseil/install_abseil.sh
 
 COPY install/protobuf /tmp/install/protobuf
 RUN /tmp/install/protobuf/install_protobuf.sh
