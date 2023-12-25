@@ -18,11 +18,13 @@ install(TARGETS roscpp_proto_serialization
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
 
+message("!!!!!!!!!!!!!!!!!!!!!!")
+message("var = ${CMAKE_CURRENT_SOURCE_DIR}")
+
 set(files_to_install
 ${CMAKE_CURRENT_SOURCE_DIR}/include/ros/*
 )
-message("!!!!!!!!!!!!!!!!!!!!!!")
-message("var = ${CMAKE_CURRENT_SOURCE_DIR}")
+
 
 add_custom_target(copy_serialization_files
   COMMAND ${CMAKE_COMMAND} -E copy ${files_to_install} /opt/ros/noetic/include/ros/

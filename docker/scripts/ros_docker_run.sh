@@ -17,8 +17,8 @@ gid="$(id -g)"
 
 
 echo "stop and rm docker" 
-docker stop ros_noetic > /dev/null
-docker rm -v -f ros_noetic > /dev/null
+docker stop ros_noetic_proto > /dev/null
+docker rm -v -f ros_noetic_proto > /dev/null
 
 echo "start docker"
 docker run -it -d \

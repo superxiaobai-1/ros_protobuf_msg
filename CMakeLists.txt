@@ -9,7 +9,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp_traits rostime
   roscpp
   roslib)
-  catkin_package()
+
+catkin_package()
 # catkin_package(
 #   INCLUDE_DIRS include
 #   CATKIN_DEPENDS cpp_common rostime)
@@ -25,6 +26,7 @@ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g")
 add_subdirectory(message_traits)
 add_subdirectory(message_serialization)
 add_subdirectory(sample_protos)
+# add_subdirectory(roscpp)
 
 include_directories(${roscpp_INCLUDE_DIRS})
 
@@ -36,14 +38,12 @@ include_directories(
 add_executable(pb_talker pb_talker.cpp
 )
 
-add_dependencies(pb_talker copy_traits_files)
-add_dependencies(pb_talker copy_serialization_files)
+add_dependencies(pb_talker copy_traits_files copy_serialization_files)
 
 target_link_libraries(pb_talker 
 ${roscpp_LIBRARIES} 
 pb_proto
 roscpp_proto_serialization
-
 )
 
 
@@ -53,8 +53,7 @@ ${roscpp_LIBRARIES}
 pb_proto
 roscpp_proto_serialization
 )
-add_dependencies(pb_listener copy_traits_files)
-add_dependencies(pb_listener copy_serialization_files)
+add_dependencies(pb_listener copy_traits_files copy_serialization_files)
 
 add_executable(talker talker.cpp)
 target_link_libraries(talker ${roscpp_LIBRARIES} ${std_msgs_LIBRARIES})
@@ -70,10 +69,10 @@ install(TARGETS talker listener
 # install(TARGETS talker listener
 #         DESTINATION bin)
 
-install(TARGETS pb_talker pb_listener 
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+# install(TARGETS pb_talker pb_listener 
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 message("!!!!!!!!!!!!!!")
 message("pb = ${CMAKE_CURRENT_SOURCE_DIR}")
