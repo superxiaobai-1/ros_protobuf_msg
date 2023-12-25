@@ -1,9 +1,8 @@
 #include <ros/protobuffer_traits.h>
 #include <ros/serialization_protobuffer.h>
-#include "publish_info.pb.h"
 #include "ros/ros.h"
-int main(int argc, char **argv)
-{
+#include "publish_info.pb.h"
+int main(int argc, char **argv) {
   ros::init(argc, argv, "talker");
   ros::NodeHandle n;
 
@@ -13,8 +12,7 @@ int main(int argc, char **argv)
   ros::Rate loop_rate(10);
 
   int count = 0;
-  while (ros::ok())
-  {
+  while (ros::ok()) {
     superbai::sample::PublishInfo proto_msg_info;
     proto_msg_info.set_name("superbai");
     proto_msg_info.set_message_type("ros_protobuf");

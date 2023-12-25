@@ -30,45 +30,37 @@
 
 #include "serialization.h"
 
-#include <boost/utility/enable_if.hpp>
-#include <boost/type_traits/is_base_of.hpp>
 #include <google/protobuf/message.h>
 
-namespace ros
-{
-  namespace serialization
-  {
-    //protobuffer serialization
-    template <typename T>
-    struct Serializer<T, typename boost::enable_if<boost::is_base_of<::google::protobuf::Message, T>>::type>
-    {
-      template <typename Stream>
-      inline static void write(Stream &stream, const T &t)
-      {
+namespace ros {
+namespace serialization {
+// protobuffer serialization
+template <typename T>
+struct Serializer<T, typename std::enable_if<std::is_base_of<
+                         ::google::protobuf::Message, T>::value>::type> {
+  template <typename Stream>
+  inline static void write(Stream &stream, const T &t) {
+    std::string pb_str;
+    t.SerializeToString(&pb_str);
+    std::cout << "pb_str" << std::endl;
+    stream.next(pb_str);
+  }
 
-        std::string pb_str;
-        t.SerializeToString(&pb_str);
-        std::cout << "pb_str" << std::endl;
-        stream.next(pb_str);
-      }
+  template <typename Stream>
+  inline static void read(Stream &stream, T &t) {
+    std::string pb_str;
+    stream.next(pb_str);
+    t.ParseFromString(pb_str);
+  }
 
-      template <typename Stream>
-      inline static void read(Stream &stream, T &t)
-      {
-        std::string pb_str;
-        stream.next(pb_str);
-        t.ParseFromString(pb_str);
-      }
+  inline static uint32_t serializedLength(const T &t) {
+    std::string pb_str;
+    t.SerializeToString(&pb_str);
+    return 4 + (uint32_t)pb_str.size();
+  }
+};
 
-      inline static uint32_t serializedLength(const T &t)
-      {
-        std::string pb_str;
-        t.SerializeToString(&pb_str);
-        return 4 + (uint32_t)pb_str.size();
-      }
-    };
+}  // namespace serialization
+}  // namespace ros
 
-  } // namespace serialization
-} // namespace ros
-
-#endif // ROSCPP_SERIALIZATION_H
+#endif  // ROSCPP_SERIALIZATION_H

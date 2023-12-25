@@ -33,10 +33,6 @@
 
 #include <ros/time.h>
 
-#include <boost/type_traits/is_base_of.hpp>
-#include <boost/type_traits/remove_const.hpp>
-#include <boost/type_traits/remove_reference.hpp>
-#include <boost/utility/enable_if.hpp>
 #include <map>
 #include <string>
 #include <typeinfo>
@@ -47,11 +43,11 @@
 namespace ros {
 namespace message_traits {
 // protobuffer trait
-static std::map<std::string, std::string> type_md5_map;
+// static std::map<std::string, std::string> type_md5_map;
 
 template <typename T>
-struct DataType<T, typename boost::enable_if<boost::is_base_of<
-                       ::google::protobuf::Message, T> >::type> {
+struct DataType<T, typename std::enable_if<std::is_base_of<
+                       ::google::protobuf::Message, T>::value>::type> {
   static const char* value() {
     static std::string data_type = "";
     data_type = "pb_msgs/" + T::descriptor()->name();
@@ -61,45 +57,47 @@ struct DataType<T, typename boost::enable_if<boost::is_base_of<
 };
 
 template <typename T>
-struct MD5Sum<T, typename boost::enable_if<boost::is_base_of<
-                     ::google::protobuf::Message, T> >::type> {
+struct MD5Sum<T, typename std::enable_if<std::is_base_of<
+                     ::google::protobuf::Message, T>::value>::type> {
   static const char* value() { return "proto_md5"; }
   static const char* value(const T&) { return value(); }
 };
 
 template <typename T>
-struct Definition<T, typename boost::enable_if<boost::is_base_of<
-                         ::google::protobuf::Message, T> >::type> {
+struct Definition<T, typename std::enable_if<std::is_base_of<
+                         ::google::protobuf::Message, T>::value>::type> {
   static const char* value() { return "protobuf"; }
   static const char* value(const T&) { return "protobuf"; }
 };
 
 template <typename T>
-struct HasHeader<T, typename boost::enable_if<boost::is_base_of<
-                        ::google::protobuf::Message, T> >::type> : FalseType {};
-
-template <typename T>
-struct HasHeader<T const, typename boost::enable_if<boost::is_base_of<
-                              ::google::protobuf::Message, T> >::type>
+struct HasHeader<T, typename std::enable_if<std::is_base_of<
+                        ::google::protobuf::Message, T>::value>::type>
     : FalseType {};
 
 template <typename T>
-struct IsFixedSize<T, typename boost::enable_if<boost::is_base_of<
-                          ::google::protobuf::Message, T> >::type> : FalseType {
-};
-
-template <typename T>
-struct IsFixedSize<T const, typename boost::enable_if<boost::is_base_of<
-                                ::google::protobuf::Message, T> >::type>
+struct HasHeader<T const, typename std::enable_if<std::is_base_of<
+                              ::google::protobuf::Message, T>::value>::type>
     : FalseType {};
 
 template <typename T>
-struct IsMessage<T, typename boost::enable_if<boost::is_base_of<
-                        ::google::protobuf::Message, T> >::type> : TrueType {};
+struct IsFixedSize<T, typename std::enable_if<std::is_base_of<
+                          ::google::protobuf::Message, T>::value>::type>
+    : FalseType {};
 
 template <typename T>
-struct IsMessage<T const, typename boost::enable_if<boost::is_base_of<
-                              ::google::protobuf::Message, T> >::type>
+struct IsFixedSize<T const, typename std::enable_if<std::is_base_of<
+                                ::google::protobuf::Message, T>::value>::type>
+    : FalseType {};
+
+template <typename T>
+struct IsMessage<T, typename std::enable_if<std::is_base_of<
+                        ::google::protobuf::Message, T>::value>::type>
+    : TrueType {};
+
+template <typename T>
+struct IsMessage<T const, typename std::enable_if<std::is_base_of<
+                              ::google::protobuf::Message, T>::value>::type>
     : TrueType {};
 
 }  // namespace message_traits

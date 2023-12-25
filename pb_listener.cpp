@@ -28,20 +28,19 @@
 // %Tag(FULLTEXT)%
 #include <ros/protobuffer_traits.h>
 #include <ros/serialization_protobuffer.h>
-#include "publish_info.pb.h"
 #include "ros/ros.h"
+#include "publish_info.pb.h"
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
 // %Tag(CALLBACK)%
-void chatterCallback(const boost::shared_ptr<superbai::sample::PublishInfo> &msg)
-{
+void chatterCallback(
+    const boost::shared_ptr<superbai::sample::PublishInfo> &msg) {
   std::cerr << "I heard: " << msg->DebugString() << std::endl;
 }
 // %EndTag(CALLBACK)%
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   ros::init(argc, argv, "listener");
 
   /**
