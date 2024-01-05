@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
    * throw away the oldest ones.
    */
   // %Tag(SUBSCRIBER)%
-  ros::Subscriber sub = n.subscribe("/test_superbai", 1000, chatterCallback);
+  ros::Subscriber sub = n.subscribe("/Sorbai", 1000, chatterCallback);
   // %EndTag(SUBSCRIBER)%
 
   /**
