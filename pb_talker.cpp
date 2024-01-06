@@ -3,7 +3,7 @@
 #include "ros/ros.h"
 #include "publish_info.pb.h"
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "talker");
+  ros::init(argc, argv, "pb_talker");
   ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME,
                                  ros::console::levels::Debug);
   ros::NodeHandle n;

@@ -41,7 +41,7 @@ void chatterCallback(
 // %EndTag(CALLBACK)%
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "listener");
+  ros::init(argc, argv, "pb_listener");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
