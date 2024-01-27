@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package superbai.sample;
+
+
+message RosProtoTest {
+  // int32 num = 100;
+  // field: <1,0> 200
+  string name = 2;
+  // double a = 3;
+  // repeated string n = 100;
+}
+
+// message Superbai {
+//   int32 a = 1;
+//   string b = 2;
+// }
+
