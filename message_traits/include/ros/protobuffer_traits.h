@@ -28,17 +28,16 @@
 #ifndef ROSLIB_PROTOBUFFER_TRAITS_H
 #define ROSLIB_PROTOBUFFER_TRAITS_H
 
-#include "message_forward.h"
-#include "message_traits.h"
-
-#include <ros/time.h>
-
 #include <map>
 #include <string>
 #include <typeinfo>
 
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/message.h>
+#include <ros/time.h>
+
+#include "message_forward.h"
+#include "message_traits.h"
 
 namespace ros {
 namespace message_traits {
@@ -66,8 +65,46 @@ struct MD5Sum<T, typename std::enable_if<std::is_base_of<
 template <typename T>
 struct Definition<T, typename std::enable_if<std::is_base_of<
                          ::google::protobuf::Message, T>::value>::type> {
-  static const char* value() { return "protobuf"; }
-  static const char* value(const T&) { return "protobuf"; }
+  static const char* value() {
+    const google::protobuf::Descriptor* descriptor = T::descriptor();
+
+    static std::string des;
+    static std::atomic<bool> flag{false};
+
+    if (flag) {
+      return des.c_str();
+    }
+    if (descriptor) {
+      des.append("\n================\n");
+      des.append("file_name: ");
+      des.append(descriptor->file()->name());
+      des.append(";\n");
+      des.append("proto name: ");
+      des.append(descriptor->full_name());
+      des.append(";\n");
+
+      // for (int i = 0; i < descriptor->field_count(); ++i) {
+      //   const google::protobuf::FieldDescriptor* field =
+      //   descriptor->field(i); std::cout << "Field name: " << field->name()
+      //             << ", type: " << field->type()
+      //             << "file: " << field->file()->name() << std::endl;
+      //   des.append("value_name: ");
+      //   des.append(field->name());
+      //   des.append("; ");
+      //   des.append("type: ");
+      //   des.append(google::protobuf::FieldDescriptor::TypeName(field->type()));
+      //   des.append(";\n");
+      // }
+      des.append(descriptor->DebugString());
+      des.append("================\n");
+      flag = true;
+    } else {
+      std::cout << "Descriptor is null." << std::endl;
+    }
+
+    return des.c_str();
+  }
+  static const char* value(const T&) { return value(); }
 };
 
 template <typename T>

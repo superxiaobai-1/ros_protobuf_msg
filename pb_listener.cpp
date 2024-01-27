@@ -28,7 +28,9 @@
 // %Tag(FULLTEXT)%
 #include <ros/protobuffer_traits.h>
 #include <ros/serialization_protobuffer.h>
+
 #include "ros/ros.h"
+
 #include "publish_info.pb.h"
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
@@ -37,6 +39,9 @@
 void chatterCallback(
     const boost::shared_ptr<superbai::sample::PublishInfo> &msg) {
   std::cerr << "I heard: " << msg->DebugString() << std::endl;
+  std::string def =
+      ros::message_traits::Definition<superbai::sample::PublishInfo>::value();
+  std::cout << "def: " << def << std::endl;
 }
 // %EndTag(CALLBACK)%
 
