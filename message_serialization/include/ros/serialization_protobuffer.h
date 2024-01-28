@@ -28,9 +28,9 @@
 #ifndef ROSCPP_SERIALIZATION_PROTOBUFFER_H
 #define ROSCPP_SERIALIZATION_PROTOBUFFER_H
 
-#include "serialization.h"
-
 #include <google/protobuf/message.h>
+
+#include "serialization.h"
 
 namespace ros {
 namespace serialization {
@@ -42,14 +42,36 @@ struct Serializer<T, typename std::enable_if<std::is_base_of<
   inline static void write(Stream &stream, const T &t) {
     std::string pb_str;
     t.SerializeToString(&pb_str);
-    std::cout << "pb_str" << std::endl;
-    stream.next(pb_str);
+    // 4个字节
+    uint32_t len = (uint32_t)pb_str.size();
+    stream.next(len);
+
+    if (len > 0) {
+      memcpy(stream.advance((uint32_t)len), pb_str.data(), len);
+    }
+    // std::cout << "pb_str" << std::endl;
+    // stream.next(pb_str);
   }
 
+  // ros反序列化的接口
   template <typename Stream>
   inline static void read(Stream &stream, T &t) {
+    uint32_t len;
+    // IStream
+    stream.next(len);
+    // std::cout << "len: " << len << std::endl;
+
     std::string pb_str;
-    stream.next(pb_str);
+    if (len > 0) {
+      const char *data_ptr =
+          reinterpret_cast<const char *>(stream.advance(len));
+
+      pb_str = std::string(data_ptr, len);
+    } else {
+      pb_str.clear();
+    }
+
+    // stream.next(pb_str);
     t.ParseFromString(pb_str);
   }
 

@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-// the same as namespace, look like: cargo.alpas.perception
 package superbai.sample;
 
 message PublishInfo {
@@ -8,4 +7,12 @@ message PublishInfo {
     string message_type = 2;
     string publish_msg = 3;
 
+}
+
+message work {
+
+}
+
+message date {
+    
 }
