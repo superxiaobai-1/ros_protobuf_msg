@@ -36,9 +36,16 @@
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
 // %Tag(CALLBACK)%
+// void chatterCallback(
+//     const boost::shared_ptr<superbai::sample::PublishInfo> &msg) {
+//   std::cerr << "I heard: " << msg->DebugString() << std::endl;
+//   std::string def =
+//       ros::message_traits::Definition<superbai::sample::PublishInfo>::value();
+//   std::cout << "def: " << def << std::endl;
+// }
 void chatterCallback(
-    const boost::shared_ptr<superbai::sample::PublishInfo> &msg) {
-  std::cerr << "I heard: " << msg->DebugString() << std::endl;
+    const ros::MessageEvent<superbai::sample::PublishInfo> &msg) {
+  std::cerr << "I heard: " << msg.getMessage()->DebugString() << std::endl;
   std::string def =
       ros::message_traits::Definition<superbai::sample::PublishInfo>::value();
   std::cout << "def: " << def << std::endl;
