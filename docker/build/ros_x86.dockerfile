@@ -1,5 +1,7 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
+COPY apt/sources.list /etc/apt/
+
 RUN apt-get clean && \
     apt-get autoclean
 RUN apt update && \ 
